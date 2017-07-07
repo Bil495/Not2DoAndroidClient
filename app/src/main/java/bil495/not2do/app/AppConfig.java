@@ -1,4 +1,8 @@
-package com.okapi.not2do.app;
+package bil495.not2do.app;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Created by burak on 7/6/2017.
@@ -23,6 +27,8 @@ public class AppConfig {
     public static String PATH_PARTICIPANTS = "not2do/%d/participants"; //not2do/:not2do_id/participants
     public static String PATH_PARTICIPATE = "participate/%d"; //participate/:not2do_id
     public static String PATH_REPORT_PARTICIPATE = "failed/%d/%s"; //failed/:not2do_id/:username
+
+    public static DateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss +0000", Locale.ENGLISH);
 
     public static String getURLLogin(){
         return HOST + PATH_LOGIN;

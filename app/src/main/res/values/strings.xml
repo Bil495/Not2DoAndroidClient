@@ -16,4 +16,13 @@
     <string name="name">Name</string>
     <string name="surname">Surname</string>
     <string name="username">Username</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <!-- Strings related to main activity -->
+    <string name="title_fragment_timeline">Global</string>
+    <string name="title_fragment_followings">Followings</string>
+    <string name="title_fragment_profile">Profile</string>
 </resources>

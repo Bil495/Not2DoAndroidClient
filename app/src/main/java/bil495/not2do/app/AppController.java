@@ -1,4 +1,4 @@
-package com.okapi.not2do.app;
+package bil495.not2do.app;
 
 /**
  * Created by burak on 7/6/2017.

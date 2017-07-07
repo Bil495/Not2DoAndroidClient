@@ -1,4 +1,4 @@
-package com.okapi.not2do.helper;
+package bil495.not2do.helper;
 
 /**
  * Created by burak on 7/6/2017.

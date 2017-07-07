@@ -1,4 +1,4 @@
-package com.okapi.not2do;
+package bil495.not2do;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -14,9 +14,9 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.okapi.not2do.app.AppConfig;
-import com.okapi.not2do.app.AppController;
-import com.okapi.not2do.helper.SessionManager;
+import bil495.not2do.app.AppConfig;
+import bil495.not2do.app.AppController;
+import bil495.not2do.helper.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;

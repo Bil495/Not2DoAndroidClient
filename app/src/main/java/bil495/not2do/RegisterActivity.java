@@ -1,4 +1,4 @@
-package com.okapi.not2do;
+package bil495.not2do;
 
 /**
  * Created by burak on 7/6/2017.
@@ -18,9 +18,9 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.okapi.not2do.app.AppConfig;
-import com.okapi.not2do.app.AppController;
-import com.okapi.not2do.helper.SessionManager;
+import bil495.not2do.app.AppConfig;
+import bil495.not2do.app.AppController;
+import bil495.not2do.helper.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +47,7 @@ public class RegisterActivity extends Activity {
 
         inputName = (EditText) findViewById(R.id.name);
         inputSurName = (EditText) findViewById(R.id.surname);
-        inputUserName = (EditText) findViewById(R.id.username);
+        inputUserName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         btnRegister = (Button) findViewById(R.id.btnRegister);
