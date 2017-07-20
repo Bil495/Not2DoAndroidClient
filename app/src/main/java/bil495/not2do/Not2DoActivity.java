@@ -1,5 +1,6 @@
 package bil495.not2do;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -64,8 +65,18 @@ public class Not2DoActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.username)).setText("@" + not2Do.getCreator().getUsername());
         ((TextView) findViewById(R.id.content)).setText(not2Do.getContent());
         ((ImageView) findViewById(R.id.thumbnail)).setImageResource(R.drawable.user);
-        ((TextView) findViewById(R.id.participants_clickable))
-                .setText(Integer.toString(not2Do.getParticipants()).concat(" participants"));
+        TextView participants = ((TextView) findViewById(R.id.participants_clickable));
+        participants.setText(Integer.toString(not2Do.getParticipants()).concat(" participants"));
+        participants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), ParticipantsActivity.class);
+                intent.putExtra("not2do", not2Do);
+                startActivity(intent);
+            }
+        });
+
+
 
     }
 

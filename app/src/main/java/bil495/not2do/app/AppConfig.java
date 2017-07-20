@@ -11,7 +11,7 @@ import java.util.Locale;
 public class AppConfig {
     //TODO Change the host to heroku server when it is ready
     // Server url
-    public static String HOST = "http://192.168.1.5/api/v1/";
+    public static String HOST = "http://192.168.1.3/api/v1/";
 
     //Api paths
     public static String PATH_LOGIN = "login";
@@ -60,7 +60,7 @@ public class AppConfig {
     public static String getURLCreateNot2Do(){
         return HOST + PATH_CREATE_NOT2DO;
     }
-    public static String getURLParticipantsOfNot2Do(Integer not2DoId){
+    public static String getURLParticipantsOfNot2Do(long not2DoId){
         return HOST + String.format(PATH_PARTICIPANTS, not2DoId);
     }
     public static String getURLParticipate(Integer not2DoId){
