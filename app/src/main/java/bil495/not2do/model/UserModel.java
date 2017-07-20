@@ -1,12 +1,13 @@
 package bil495.not2do.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by burak on 7/7/2017.
  */
 
-public class UserModel {
+public class UserModel implements Serializable {
     private String username;
     private String name;
     private String surname;

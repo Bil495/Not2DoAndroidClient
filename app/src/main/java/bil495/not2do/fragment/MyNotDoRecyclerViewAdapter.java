@@ -1,12 +1,21 @@
 package bil495.not2do.fragment;
 
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.media.Image;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.sackcentury.shinebuttonlib.ShineButton;
 
 import bil495.not2do.R;
 import bil495.not2do.fragment.NotDoFragment.OnListFragmentInteractionListener;
@@ -16,10 +25,12 @@ import java.util.List;
 
 public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecyclerViewAdapter.ViewHolder> {
 
+    private final Context mContext;
     private final List<Not2DoModel> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyNotDoRecyclerViewAdapter(List<Not2DoModel> items, OnListFragmentInteractionListener listener) {
+    public MyNotDoRecyclerViewAdapter(Context context, List<Not2DoModel> items, OnListFragmentInteractionListener listener) {
+        mContext = context;
         mValues = items;
         mListener = listener;
     }
@@ -34,11 +45,38 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mFullNameView.setText(mValues.get(position).getCreator().getName() + " " +
-                mValues.get(position).getCreator().getSurname() );
-        holder.mUsernameView.setText("@" + mValues.get(position).getCreator().getUsername() );
-        holder.mContentView.setText(mValues.get(position).getContent());
+        holder.mFullNameView.setText(holder.mItem.getCreator().getName() + " " +
+                holder.mItem.getCreator().getSurname() );
+        holder.mUsernameView.setText("@" + holder.mItem.getCreator().getUsername() );
+        holder.mContentView.setText(holder.mItem.getContent());
         holder.mProfilePicView.setImageResource(R.drawable.user);
+        holder.mParticipantCount.setText(Integer.toString(holder.mItem.getParticipants()));
+
+        if(holder.mItem.isDidParticipate()){
+            holder.mParticipantCount.setTextColor(Color.parseColor("#CC9999"));
+        }else{
+            holder.mParticipantCount.setTextColor(Color.parseColor("#666666"));
+        }
+
+        holder.mLikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holder.mItem.isDidParticipate()){
+                    holder.mItem.setParticipants(holder.mItem.getParticipants() - 1);
+                }else{
+                    holder.mItem.setParticipants(holder.mItem.getParticipants() + 1);
+                }
+                holder.mItem.setDidParticipate(!holder.mItem.isDidParticipate());
+                notifyDataSetChanged();
+            }
+        });
+
+        holder.mOverFlow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupMenu(holder.mOverFlow);
+            }
+        });
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +90,18 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecy
         });
     }
 
+    /**
+     * Showing popup menu when tapping on 3 dots
+     */
+    private void showPopupMenu(View view) {
+        // inflate menu
+        PopupMenu popup = new PopupMenu(mContext, view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_not2do, popup.getMenu());
+        popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
+        popup.show();
+    }
+
     @Override
     public int getItemCount() {
         return mValues.size();
@@ -63,6 +113,9 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecy
         public final TextView mUsernameView;
         public final TextView mContentView;
         public final ImageView mProfilePicView;
+        public final ImageView mOverFlow;
+        public final TextView mParticipantCount;
+        public final ShineButton mLikeButton;
         public Not2DoModel mItem;
 
         public ViewHolder(View view) {
@@ -72,11 +125,37 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecy
             mUsernameView = (TextView) view.findViewById(R.id.username);
             mContentView = (TextView) view.findViewById(R.id.content);
             mProfilePicView = (ImageView) view.findViewById(R.id.thumbnail);
+            mOverFlow = (ImageView) view.findViewById(R.id.overflow);
+            mParticipantCount = (TextView) view.findViewById(R.id.participant_count);
+            mLikeButton = (ShineButton) view.findViewById(R.id.like_button);
         }
 
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
+        }
+    }
+
+    /**
+     * Click listener for popup menu items
+     */
+    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+
+        public MyMenuItemClickListener() {
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.action_share:
+                    Toast.makeText(mContext, "Sharing", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.action_remove:
+                    Toast.makeText(mContext, "Removing", Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+            }
+            return false;
         }
     }
 }

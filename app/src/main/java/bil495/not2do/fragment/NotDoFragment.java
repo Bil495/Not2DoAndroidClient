@@ -86,7 +86,7 @@ public class NotDoFragment extends Fragment {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mAdapter = new MyNotDoRecyclerViewAdapter(list, mListener);
+            mAdapter = new MyNotDoRecyclerViewAdapter(getContext(), list, mListener);
             recyclerView.setAdapter(mAdapter);
         }
         return view;
@@ -153,7 +153,7 @@ public class NotDoFragment extends Fragment {
                             }catch (ParseException parseException){
 
                             }
-                            not2Do.setCreatedAd(date);
+                            not2Do.setCreatedAt(date);
                             not2Do.setCreator(user);
 
                             list.add(not2Do);

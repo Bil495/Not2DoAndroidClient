@@ -1,5 +1,6 @@
 package bil495.not2do;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import bil495.not2do.fragment.NotDoFragment;
+import bil495.not2do.helper.SessionManager;
 import bil495.not2do.model.Not2DoModel;
 
 public class MainActivity extends AppCompatActivity implements NotDoFragment.OnListFragmentInteractionListener {
@@ -84,6 +86,12 @@ public class MainActivity extends AppCompatActivity implements NotDoFragment.OnL
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }else if(id == R.id.action_logout){
+            SessionManager sessionManager = new SessionManager(this);
+            sessionManager.setLogin(false);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -92,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements NotDoFragment.OnL
     @Override
     public void onListFragmentInteraction(Not2DoModel item) {
         //TODO Start not2do activity here
+        Intent intent = new Intent(this, Not2DoActivity.class);
+        intent.putExtra("not2do", item);
+        startActivity(intent);
     }
 
     /**
