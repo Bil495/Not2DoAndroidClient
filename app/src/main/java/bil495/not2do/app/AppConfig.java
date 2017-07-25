@@ -11,7 +11,7 @@ import java.util.Locale;
 public class AppConfig {
     //TODO Change the host to heroku server when it is ready
     // Server url
-    public static String HOST = "http://192.168.1.7/api/v1/";
+    public static String HOST = "http://10.0.2.2/api/v1/";
 
     //Api paths
     public static String PATH_LOGIN = "login";
@@ -27,6 +27,8 @@ public class AppConfig {
     public static String PATH_PARTICIPANTS = "not2do/%d/participants"; //not2do/:not2do_id/participants
     public static String PATH_PARTICIPATE = "participate/%d"; //participate/:not2do_id
     public static String PATH_REPORT_PARTICIPATE = "failed/%d/%s"; //failed/:not2do_id/:username
+    public static String PATH_FOLLOWERS = "user/%s/followers"; //user/:username/followers
+    public static String PATH_FOLLOWINGS = "user/%s/followings"; //user/:username/followings
 
     public static DateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss +0000", Locale.ENGLISH);
 
@@ -68,5 +70,11 @@ public class AppConfig {
     }
     public static String getURLReport(Integer not2DoId, String username){
         return HOST + String.format(PATH_REPORT_PARTICIPATE, not2DoId, username);
+    }
+    public static String getURLFollowersOfUser(String username){
+        return HOST + String.format(PATH_FOLLOWERS, username);
+    }
+    public static String getURLFollowingOfUser(String username){
+        return HOST + String.format(PATH_FOLLOWINGS, username);
     }
 }

@@ -42,10 +42,10 @@ import java.util.Map;
 
 import bil495.not2do.app.AppConfig;
 import bil495.not2do.app.AppController;
-import bil495.not2do.fragment.MyNotDoRecyclerViewAdapter;
 import bil495.not2do.fragment.NotDoFragment;
 import bil495.not2do.helper.LikeManager;
 import bil495.not2do.helper.SessionManager;
+import bil495.not2do.holder.UserProfileViewHolder;
 import bil495.not2do.model.Not2DoModel;
 import bil495.not2do.model.UserModel;
 
@@ -194,6 +194,7 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
                         JSONArray arr = jObj.getJSONArray("participating");
                         JSONArray arr2 = jObj.getJSONArray("owning");
                         user.setPosts(arr2.length());
+                        user.setParticipating(arr.length());
                         for (int i = 0; i < arr.length(); i++){
                             JSONObject obj = arr.getJSONObject(i);
 

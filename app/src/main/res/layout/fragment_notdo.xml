@@ -23,7 +23,7 @@
 
             <TextView
                 android:id="@+id/username"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/songs_count_padding_bottom"
                 android:paddingRight="@dimen/album_title_padding"
@@ -95,11 +95,12 @@
                     android:src="@drawable/ic_heart_outline_grey" />
 
                 <ImageButton
-                    android:id="@+id/btnComments"
+                    android:id="@+id/btnFail"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:background="@drawable/btn_feed_action"
-                    android:src="@drawable/ic_comment_outline_grey" />
+                    android:src="@drawable/ic_fire_outline"
+                    android:visibility="invisible"/>
 
                 <ImageButton
                     android:id="@+id/overflow"
@@ -138,6 +139,32 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#2b5a83" />
+                    </TextSwitcher>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_whatshot_red" />
+
+                    <TextSwitcher
+                        android:id="@+id/tsFailsCounter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:inAnimation="@anim/slide_in_likes_counter"
+                        android:outAnimation="@anim/slide_out_likes_counter">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="123 fails"
+                            android:textColor="#d50000" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#d50000" />
                     </TextSwitcher>
                 </LinearLayout>
             </LinearLayout>

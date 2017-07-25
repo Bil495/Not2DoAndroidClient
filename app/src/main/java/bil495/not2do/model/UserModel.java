@@ -17,6 +17,8 @@ public class UserModel implements Serializable {
     private int followers;
     private int following;
     private int posts;
+    private int participating;
+    private boolean follow;
 
     public String getUsername() {
         return username;
@@ -88,5 +90,21 @@ public class UserModel implements Serializable {
 
     public void setPosts(int posts) {
         this.posts = posts;
+    }
+
+    public int getParticipating() {
+        return participating;
+    }
+
+    public void setParticipating(int participating) {
+        this.participating = participating;
+    }
+
+    public boolean isFollow() {
+        return follow;
+    }
+
+    public void setFollow(boolean follow) {
+        this.follow = follow;
     }
 }

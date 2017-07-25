@@ -19,6 +19,7 @@ import com.sackcentury.shinebuttonlib.ShineButton;
 
 import bil495.not2do.fragment.MyNotDoRecyclerViewAdapter;
 import bil495.not2do.helper.LikeManager;
+import bil495.not2do.holder.Not2DoViewHolder;
 import bil495.not2do.model.Not2DoModel;
 
 /**
@@ -44,8 +45,8 @@ public class Not2DoActivity extends AppCompatActivity {
 
         Not2DoModel not2DoGiven = (Not2DoModel) getIntent().getSerializableExtra("not2do");
         not2Do = LikeManager.LIKES.get(not2DoGiven.getId());
-        MyNotDoRecyclerViewAdapter.Not2DoViewHolder viewHolder =
-                new MyNotDoRecyclerViewAdapter.Not2DoViewHolder(getBaseContext(), findViewById(android.R.id.content));
+        Not2DoViewHolder viewHolder =
+                new Not2DoViewHolder(getBaseContext(), findViewById(android.R.id.content));
         viewHolder.bindView(not2Do);
     }
 

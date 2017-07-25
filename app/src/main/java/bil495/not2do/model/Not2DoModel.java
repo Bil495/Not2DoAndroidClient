@@ -13,7 +13,9 @@ public class Not2DoModel implements Serializable{
     private String content;
     private Date createdAt;
     private int participants;
+    private int failures;
     private boolean didParticipate;
+    private boolean didFail;
 
     public boolean isDidParticipate() {
         return didParticipate;
@@ -63,6 +65,21 @@ public class Not2DoModel implements Serializable{
         this.participants = participants;
     }
 
+    public boolean isDidFail() {
+        return didFail;
+    }
+
+    public void setDidFail(boolean didFail) {
+        this.didFail = didFail;
+    }
+
+    public int getFailures() {
+        return failures;
+    }
+
+    public void setFailures(int failures) {
+        this.failures = failures;
+    }
 
     @Override
     public String toString() {

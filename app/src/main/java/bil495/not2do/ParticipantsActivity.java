@@ -42,12 +42,16 @@ public class ParticipantsActivity extends AppCompatActivity {
     private MyUserRecyclerViewAdapter mAdapter;
     private ProgressDialog pDialog;
 
-    private Not2DoModel not2Do;
     private List<UserModel> users;
+
+    private String URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        URL = getIntent().getStringExtra("url");
+        setTitle(getIntent().getStringExtra("title"));
         // Progress dialog
         pDialog = new ProgressDialog(ParticipantsActivity.this);
         pDialog.setCancelable(false);
@@ -59,8 +63,6 @@ public class ParticipantsActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
-        not2Do = (Not2DoModel) getIntent().getSerializableExtra("not2do");
         users = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -105,8 +107,7 @@ public class ParticipantsActivity extends AppCompatActivity {
         pDialog.setMessage("Getting timeline ...");
         showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.getURLParticipantsOfNot2Do(not2Do.getId()), new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {

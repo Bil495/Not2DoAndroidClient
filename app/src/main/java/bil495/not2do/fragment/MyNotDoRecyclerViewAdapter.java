@@ -16,15 +16,20 @@ import android.widget.Toast;
 
 import bil495.not2do.ParticipantsActivity;
 import bil495.not2do.R;
+import bil495.not2do.UserProfileActivity;
+import bil495.not2do.app.AppConfig;
 import bil495.not2do.fragment.NotDoFragment.OnListFragmentInteractionListener;
 import bil495.not2do.helper.LikeManager;
+import bil495.not2do.helper.SessionManager;
+import bil495.not2do.holder.Not2DoViewHolder;
 import bil495.not2do.model.Not2DoModel;
+import bil495.not2do.model.UserModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import java.util.List;
 
-public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecyclerViewAdapter.Not2DoViewHolder> {
+public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<Not2DoViewHolder> {
 
     private final Context mContext;
     private final List<Not2DoModel> mValues;
@@ -52,7 +57,9 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecy
         holder.mOverFlow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopupMenu(holder.mOverFlow);
+                SessionManager sessionManager = new SessionManager(mContext);
+                showPopupMenu(holder.mOverFlow, holder.mItem.getCreator().getUsername()
+                        .equals(sessionManager.getUsername()));
                 notifyDataSetChanged();
             }
         });
@@ -72,11 +79,14 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecy
     /**
      * Showing popup menu when tapping on 3 dots
      */
-    private void showPopupMenu(View view) {
+    private void showPopupMenu(View view, boolean owner) {
         // inflate menu
         PopupMenu popup = new PopupMenu(mContext, view);
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_not2do, popup.getMenu());
+        if(owner)
+            inflater.inflate(R.menu.menu_not2do, popup.getMenu());
+        else
+            inflater.inflate(R.menu.menu_not2do, popup.getMenu());
         popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
         popup.show();
     }
@@ -84,88 +94,6 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecy
     @Override
     public int getItemCount() {
         return mValues.size();
-    }
-
-    public static class Not2DoViewHolder extends RecyclerView.ViewHolder {
-        private Context context;
-        public final View mView;
-        @BindView(R.id.fullname)
-        TextView mFullNameView;
-        @BindView(R.id.username)
-        TextView mUsernameView;
-        @BindView(R.id.content)
-        TextView mContentView;
-        @BindView(R.id.thumbnail)
-        ImageView mProfilePicView;
-        @BindView(R.id.overflow)
-        ImageView mOverFlow;
-        @BindView(R.id.btnLike)
-        ImageView btnLike;
-        @BindView(R.id.tsLikesCounter)
-        TextSwitcher tsLikesCounter;
-        public Not2DoModel mItem;
-
-        public Not2DoViewHolder(Context context, View view) {
-            super(view);
-            mView = view;
-            this.context = context;
-            ButterKnife.bind(this, view);
-        }
-
-        public void bindView(final Not2DoModel not2DoModel) {
-            this.mItem = not2DoModel;
-            btnLike.setImageResource(not2DoModel.isDidParticipate() ? R.drawable.ic_heart_red : R.drawable.ic_heart_outline_grey);
-            tsLikesCounter.setCurrentText(mItem.getParticipants() + " participants");
-
-            mFullNameView.setText(not2DoModel.getCreator().getName() + " " +
-                    not2DoModel.getCreator().getSurname() );
-            mUsernameView.setText("@" + not2DoModel.getCreator().getUsername() );
-            mContentView.setText(not2DoModel.getContent());
-            mProfilePicView.setImageResource(R.drawable.user);
-            btnLike.setImageResource(not2DoModel.isDidParticipate() ? R.drawable.ic_heart_red : R.drawable.ic_heart_outline_grey);
-            tsLikesCounter.setCurrentText(not2DoModel.getParticipants() + " participants");
-
-            btnLike.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(mItem.isDidParticipate()){
-                        mItem.setParticipants(mItem.getParticipants() - 1);
-
-                    }else{
-                        mItem.setParticipants(mItem.getParticipants() + 1);
-                    }
-                    mItem.setDidParticipate(!mItem.isDidParticipate());
-                    btnLike.setImageResource(mItem.isDidParticipate() ? R.drawable.ic_heart_red : R.drawable.ic_heart_outline_grey);
-                    updateLikesCounter(true, mItem.getParticipants());
-                }
-            });
-
-            tsLikesCounter.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, ParticipantsActivity.class);
-                    intent.putExtra("not2do", mItem);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                }
-            });
-        }
-
-        private void updateLikesCounter(boolean animated, Integer count) {
-            String likesCountText = count + " participants";
-
-            if (animated) {
-                tsLikesCounter.setText(likesCountText);
-            } else {
-                tsLikesCounter.setCurrentText(likesCountText);
-            }
-        }
-
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
-        }
     }
 
     /**
