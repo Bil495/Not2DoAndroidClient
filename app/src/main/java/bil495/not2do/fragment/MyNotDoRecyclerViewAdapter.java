@@ -19,6 +19,7 @@ import com.sackcentury.shinebuttonlib.ShineButton;
 
 import bil495.not2do.R;
 import bil495.not2do.fragment.NotDoFragment.OnListFragmentInteractionListener;
+import bil495.not2do.helper.LikeManager;
 import bil495.not2do.model.Not2DoModel;
 
 import java.util.List;
@@ -45,28 +46,32 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
+        final Not2DoModel realTime = LikeManager.LIKES.get(holder.mItem.getId());
         holder.mFullNameView.setText(holder.mItem.getCreator().getName() + " " +
                 holder.mItem.getCreator().getSurname() );
         holder.mUsernameView.setText("@" + holder.mItem.getCreator().getUsername() );
         holder.mContentView.setText(holder.mItem.getContent());
         holder.mProfilePicView.setImageResource(R.drawable.user);
-        holder.mParticipantCount.setText(Integer.toString(holder.mItem.getParticipants()));
+        holder.mParticipantCount.setText(Integer.toString(realTime.getParticipants()));
 
-        if(holder.mItem.isDidParticipate()){
+
+        if(realTime.isDidParticipate()){
             holder.mParticipantCount.setTextColor(Color.parseColor("#CC9999"));
+            holder.mLikeButton.setChecked(true);
         }else{
             holder.mParticipantCount.setTextColor(Color.parseColor("#666666"));
+            holder.mLikeButton.setChecked(false);
         }
 
         holder.mLikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(holder.mItem.isDidParticipate()){
-                    holder.mItem.setParticipants(holder.mItem.getParticipants() - 1);
+                if(realTime.isDidParticipate()){
+                    realTime.setParticipants(realTime.getParticipants() - 1);
                 }else{
-                    holder.mItem.setParticipants(holder.mItem.getParticipants() + 1);
+                    realTime.setParticipants(realTime.getParticipants() + 1);
                 }
-                holder.mItem.setDidParticipate(!holder.mItem.isDidParticipate());
+                realTime.setDidParticipate(!realTime.isDidParticipate());
                 notifyDataSetChanged();
             }
         });

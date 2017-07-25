@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import bil495.not2do.R;
 import bil495.not2do.app.AppConfig;
 import bil495.not2do.app.AppController;
+import bil495.not2do.helper.LikeManager;
 import bil495.not2do.helper.SessionManager;
 import bil495.not2do.model.Not2DoModel;
 import bil495.not2do.model.UserModel;
@@ -92,6 +93,12 @@ public class NotDoFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
+        Log.d(TAG, "NotDoFragment onResume called");
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -157,6 +164,7 @@ public class NotDoFragment extends Fragment {
                             not2Do.setCreator(user);
 
                             list.add(not2Do);
+                            LikeManager.LIKES.put(not2Do.getId(), not2Do);
                         }
                         mAdapter.notifyDataSetChanged();
                         Toast.makeText(getContext(), "Timeline is here.", Toast.LENGTH_LONG).show();

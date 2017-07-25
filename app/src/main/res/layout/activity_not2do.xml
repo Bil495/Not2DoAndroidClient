@@ -35,9 +35,7 @@
         <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/fragment_notdo"
-            android:layout_weight="1"
-            tools:layout_gravity="top|center"/>
+            layout="@layout/fragment_notdo"/>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"

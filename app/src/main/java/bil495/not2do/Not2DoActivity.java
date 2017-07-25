@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.sackcentury.shinebuttonlib.ShineButton;
 
+import bil495.not2do.helper.LikeManager;
 import bil495.not2do.model.Not2DoModel;
 
 /**
@@ -40,7 +41,8 @@ public class Not2DoActivity extends AppCompatActivity {
 
         setTitle("Not To Do");
 
-        not2Do = (Not2DoModel) getIntent().getSerializableExtra("not2do");
+        Not2DoModel not2DoGiven = (Not2DoModel) getIntent().getSerializableExtra("not2do");
+        not2Do = LikeManager.LIKES.get(not2DoGiven.getId());
         setUI();
         ShineButton likeButton = (ShineButton) findViewById(R.id.like_button);
         likeButton.setOnClickListener(new View.OnClickListener() {
