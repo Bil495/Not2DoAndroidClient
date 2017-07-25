@@ -16,6 +16,7 @@ public class UserModel implements Serializable {
     private Date createdAt;
     private int followers;
     private int following;
+    private int posts;
 
     public String getUsername() {
         return username;
@@ -79,5 +80,13 @@ public class UserModel implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getPosts() {
+        return posts;
+    }
+
+    public void setPosts(int posts) {
+        this.posts = posts;
     }
 }

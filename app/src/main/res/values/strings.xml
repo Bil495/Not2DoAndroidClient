@@ -31,4 +31,9 @@
     <string name="action_report">Report Failure</string>
     <string name="action_share">Share</string>
     <string name="action_remove">Remove</string>
+
+
+    <!-- Strings related to user profile -->
+    <string name="title_fragment_user_timeline">Created</string>
+    <string name="title_fragment_participated">Participated</string>
 </resources>

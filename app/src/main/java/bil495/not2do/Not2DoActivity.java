@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.sackcentury.shinebuttonlib.ShineButton;
 
+import bil495.not2do.fragment.MyNotDoRecyclerViewAdapter;
 import bil495.not2do.helper.LikeManager;
 import bil495.not2do.model.Not2DoModel;
 
@@ -43,43 +44,9 @@ public class Not2DoActivity extends AppCompatActivity {
 
         Not2DoModel not2DoGiven = (Not2DoModel) getIntent().getSerializableExtra("not2do");
         not2Do = LikeManager.LIKES.get(not2DoGiven.getId());
-        setUI();
-        ShineButton likeButton = (ShineButton) findViewById(R.id.like_button);
-        likeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("click", "like button clicked");
-                if(not2Do.isDidParticipate()){
-                    not2Do.setParticipants(not2Do.getParticipants() - 1);
-                }else{
-                    not2Do.setParticipants(not2Do.getParticipants() + 1);
-                }
-                not2Do.setDidParticipate(!not2Do.isDidParticipate());
-                setUI();
-            }
-        });
-    }
-
-    private void setUI(){
-        Log.d("Not2do", not2Do.toString());
-        ((TextView) findViewById(R.id.fullname)).setText(not2Do.getCreator().getName() + " " +
-                not2Do.getCreator().getSurname());
-        ((TextView) findViewById(R.id.username)).setText("@" + not2Do.getCreator().getUsername());
-        ((TextView) findViewById(R.id.content)).setText(not2Do.getContent());
-        ((ImageView) findViewById(R.id.thumbnail)).setImageResource(R.drawable.user);
-        TextView participants = ((TextView) findViewById(R.id.participants_clickable));
-        participants.setText(Integer.toString(not2Do.getParticipants()).concat(" participants"));
-        participants.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), ParticipantsActivity.class);
-                intent.putExtra("not2do", not2Do);
-                startActivity(intent);
-            }
-        });
-
-
-
+        MyNotDoRecyclerViewAdapter.Not2DoViewHolder viewHolder =
+                new MyNotDoRecyclerViewAdapter.Not2DoViewHolder(getBaseContext(), findViewById(android.R.id.content));
+        viewHolder.bindView(not2Do);
     }
 
     @Override

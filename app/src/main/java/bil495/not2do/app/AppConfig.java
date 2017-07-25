@@ -11,7 +11,7 @@ import java.util.Locale;
 public class AppConfig {
     //TODO Change the host to heroku server when it is ready
     // Server url
-    public static String HOST = "http://192.168.1.3/api/v1/";
+    public static String HOST = "http://192.168.1.7/api/v1/";
 
     //Api paths
     public static String PATH_LOGIN = "login";

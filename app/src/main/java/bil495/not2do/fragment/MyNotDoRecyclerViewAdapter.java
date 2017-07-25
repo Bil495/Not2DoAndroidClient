@@ -1,9 +1,7 @@
 package bil495.not2do.fragment;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.media.Image;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,19 +10,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sackcentury.shinebuttonlib.ShineButton;
-
+import bil495.not2do.ParticipantsActivity;
 import bil495.not2do.R;
 import bil495.not2do.fragment.NotDoFragment.OnListFragmentInteractionListener;
 import bil495.not2do.helper.LikeManager;
 import bil495.not2do.model.Not2DoModel;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import java.util.List;
 
-public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecyclerViewAdapter.ViewHolder> {
+public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecyclerViewAdapter.Not2DoViewHolder> {
 
     private final Context mContext;
     private final List<Not2DoModel> mValues;
@@ -37,49 +37,23 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecy
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Not2DoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_notdo, parent, false);
-        return new ViewHolder(view);
+        return new Not2DoViewHolder(mContext, view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final Not2DoViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         final Not2DoModel realTime = LikeManager.LIKES.get(holder.mItem.getId());
-        holder.mFullNameView.setText(holder.mItem.getCreator().getName() + " " +
-                holder.mItem.getCreator().getSurname() );
-        holder.mUsernameView.setText("@" + holder.mItem.getCreator().getUsername() );
-        holder.mContentView.setText(holder.mItem.getContent());
-        holder.mProfilePicView.setImageResource(R.drawable.user);
-        holder.mParticipantCount.setText(Integer.toString(realTime.getParticipants()));
-
-
-        if(realTime.isDidParticipate()){
-            holder.mParticipantCount.setTextColor(Color.parseColor("#CC9999"));
-            holder.mLikeButton.setChecked(true);
-        }else{
-            holder.mParticipantCount.setTextColor(Color.parseColor("#666666"));
-            holder.mLikeButton.setChecked(false);
-        }
-
-        holder.mLikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(realTime.isDidParticipate()){
-                    realTime.setParticipants(realTime.getParticipants() - 1);
-                }else{
-                    realTime.setParticipants(realTime.getParticipants() + 1);
-                }
-                realTime.setDidParticipate(!realTime.isDidParticipate());
-                notifyDataSetChanged();
-            }
-        });
+        holder.bindView(realTime);
 
         holder.mOverFlow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPopupMenu(holder.mOverFlow);
+                notifyDataSetChanged();
             }
         });
 
@@ -112,28 +86,81 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<MyNotDoRecy
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class Not2DoViewHolder extends RecyclerView.ViewHolder {
+        private Context context;
         public final View mView;
-        public final TextView mFullNameView;
-        public final TextView mUsernameView;
-        public final TextView mContentView;
-        public final ImageView mProfilePicView;
-        public final ImageView mOverFlow;
-        public final TextView mParticipantCount;
-        public final ShineButton mLikeButton;
+        @BindView(R.id.fullname)
+        TextView mFullNameView;
+        @BindView(R.id.username)
+        TextView mUsernameView;
+        @BindView(R.id.content)
+        TextView mContentView;
+        @BindView(R.id.thumbnail)
+        ImageView mProfilePicView;
+        @BindView(R.id.overflow)
+        ImageView mOverFlow;
+        @BindView(R.id.btnLike)
+        ImageView btnLike;
+        @BindView(R.id.tsLikesCounter)
+        TextSwitcher tsLikesCounter;
         public Not2DoModel mItem;
 
-        public ViewHolder(View view) {
+        public Not2DoViewHolder(Context context, View view) {
             super(view);
             mView = view;
-            mFullNameView = (TextView) view.findViewById(R.id.fullname);
-            mUsernameView = (TextView) view.findViewById(R.id.username);
-            mContentView = (TextView) view.findViewById(R.id.content);
-            mProfilePicView = (ImageView) view.findViewById(R.id.thumbnail);
-            mOverFlow = (ImageView) view.findViewById(R.id.overflow);
-            mParticipantCount = (TextView) view.findViewById(R.id.participant_count);
-            mLikeButton = (ShineButton) view.findViewById(R.id.like_button);
+            this.context = context;
+            ButterKnife.bind(this, view);
         }
+
+        public void bindView(final Not2DoModel not2DoModel) {
+            this.mItem = not2DoModel;
+            btnLike.setImageResource(not2DoModel.isDidParticipate() ? R.drawable.ic_heart_red : R.drawable.ic_heart_outline_grey);
+            tsLikesCounter.setCurrentText(mItem.getParticipants() + " participants");
+
+            mFullNameView.setText(not2DoModel.getCreator().getName() + " " +
+                    not2DoModel.getCreator().getSurname() );
+            mUsernameView.setText("@" + not2DoModel.getCreator().getUsername() );
+            mContentView.setText(not2DoModel.getContent());
+            mProfilePicView.setImageResource(R.drawable.user);
+            btnLike.setImageResource(not2DoModel.isDidParticipate() ? R.drawable.ic_heart_red : R.drawable.ic_heart_outline_grey);
+            tsLikesCounter.setCurrentText(not2DoModel.getParticipants() + " participants");
+
+            btnLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mItem.isDidParticipate()){
+                        mItem.setParticipants(mItem.getParticipants() - 1);
+
+                    }else{
+                        mItem.setParticipants(mItem.getParticipants() + 1);
+                    }
+                    mItem.setDidParticipate(!mItem.isDidParticipate());
+                    btnLike.setImageResource(mItem.isDidParticipate() ? R.drawable.ic_heart_red : R.drawable.ic_heart_outline_grey);
+                    updateLikesCounter(true, mItem.getParticipants());
+                }
+            });
+
+            tsLikesCounter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ParticipantsActivity.class);
+                    intent.putExtra("not2do", mItem);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
+        }
+
+        private void updateLikesCounter(boolean animated, Integer count) {
+            String likesCountText = count + " participants";
+
+            if (animated) {
+                tsLikesCounter.setText(likesCountText);
+            } else {
+                tsLikesCounter.setCurrentText(likesCountText);
+            }
+        }
+
 
         @Override
         public String toString() {

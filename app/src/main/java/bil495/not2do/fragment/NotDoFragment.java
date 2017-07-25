@@ -47,7 +47,7 @@ import static android.content.ContentValues.TAG;
 public class NotDoFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
-    private MyNotDoRecyclerViewAdapter mAdapter;
+    MyNotDoRecyclerViewAdapter mAdapter;
     private ProgressDialog pDialog;
     private List<Not2DoModel> list;
 
@@ -57,13 +57,6 @@ public class NotDoFragment extends Fragment {
      */
     public NotDoFragment() {
     }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static NotDoFragment newInstance(int columnCount) {
-        return new NotDoFragment();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +66,16 @@ public class NotDoFragment extends Fragment {
         pDialog.setCancelable(false);
 
 
-        list = new ArrayList<Not2DoModel>();
-        requestToServer(0);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            list = (List<Not2DoModel>) bundle.getSerializable("list");
+            Log.d("zaa", "oley beee");
+            Log.d("zaa", list.size() + "");
+        }else{
+            list = new ArrayList<>();
+            Log.d("zaa", "olamazzz");
+            requestToServer(0);
+        }
     }
 
     @Override

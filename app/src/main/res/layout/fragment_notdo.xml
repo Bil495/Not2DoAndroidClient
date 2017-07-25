@@ -46,78 +46,25 @@
                 android:textSize="@dimen/album_title"
                 tools:text="John Doe"
                 android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/linear1"
+                android:layout_toEndOf="@+id/thumbnail"
                 android:layout_marginStart="15dp"
                 android:textStyle="normal|bold" />
 
             <ImageView
-                android:id="@+id/overflow"
-                android:layout_width="@dimen/ic_album_overflow_width"
-                android:layout_height="@dimen/ic_album_overflow_height"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_dots"
-                android:layout_alignTop="@+id/linear1"
-                android:layout_alignParentEnd="true" />
-
-            <LinearLayout
-                android:id="@+id/linear1"
-                android:orientation="vertical"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true">
-
-                <ImageView
-                    android:id="@+id/thumbnail"
-                    android:layout_width="@dimen/album_cover_height"
-                    android:layout_height="@dimen/album_cover_height"
-                    tools:background="@drawable/user"
-                    android:clickable="true"
-                    android:scaleType="fitXY"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_gravity="center_horizontal" />
-
-                <com.sackcentury.shinebuttonlib.ShineButton
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@android:color/darker_gray"
-                    app:btn_color="@android:color/darker_gray"
-                    app:btn_fill_color="#FF6666"
-                    app:allow_random_color="false"
-                    app:enable_flashing="false"
-                    app:big_shine_color="#FF6666"
-                    app:click_animation_duration="200"
-                    app:shine_animation_duration="1500"
-                    app:shine_turn_angle="10"
-                    app:small_shine_offset_angle="20"
-                    app:small_shine_color="#CC9999"
-                    app:shine_count="8"
-                    app:siShape="@raw/like"
-                    android:id="@+id/like_button"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="@dimen/songs_count_padding_bottom"
-                    android:layout_marginLeft="@dimen/album_title_padding"
-                    android:layout_marginRight="@dimen/album_title_padding"
-                    android:layout_gravity="center_horizontal" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/content"
-                    android:layout_gravity="center_horizontal"
-                    android:id="@+id/participant_count"
-                    tools:text="999"
-                    android:textColor="@color/lbl_name" />
-            </LinearLayout>
+                android:id="@+id/thumbnail"
+                android:layout_width="@dimen/album_cover_height"
+                android:layout_height="@dimen/album_cover_height"
+                tools:background="@drawable/user"
+                android:clickable="true"
+                android:scaleType="fitXY"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal" />
 
             <TextView
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/songs_count_padding_bottom"
                 android:paddingLeft="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
                 android:textSize="18sp"
@@ -127,7 +74,76 @@
                 android:layout_alignStart="@+id/fullname"
                 android:textColor="@color/input_register_hint" />
 
+            <ImageView
+                android:id="@+id/ivFeedBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_marginTop="28dp"
+                android:layout_below="@+id/content"
+                android:layout_alignParentEnd="true">
+
+                <ImageButton
+                    android:id="@+id/btnLike"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_heart_outline_grey" />
+
+                <ImageButton
+                    android:id="@+id/btnComments"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/btn_feed_action"
+                    android:src="@drawable/ic_comment_outline_grey" />
+
+                <ImageButton
+                    android:id="@+id/overflow"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/btn_feed_action"
+                    android:src="@drawable/ic_more_grey" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_heart_small_blue" />
+
+                    <TextSwitcher
+                        android:id="@+id/tsLikesCounter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:inAnimation="@anim/slide_in_likes_counter"
+                        android:outAnimation="@anim/slide_out_likes_counter">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="123 likes"
+                            android:textColor="#2b5a83" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#2b5a83" />
+                    </TextSwitcher>
+                </LinearLayout>
+            </LinearLayout>
+
         </RelativeLayout>
+
 
     </android.support.v7.widget.CardView>
 
