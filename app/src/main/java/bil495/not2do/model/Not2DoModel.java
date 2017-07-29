@@ -16,6 +16,7 @@ public class Not2DoModel implements Serializable{
     private int failures;
     private boolean didParticipate;
     private boolean didFail;
+    private boolean didCreatorFailed;
 
     public boolean isDidParticipate() {
         return didParticipate;
@@ -79,6 +80,14 @@ public class Not2DoModel implements Serializable{
 
     public void setFailures(int failures) {
         this.failures = failures;
+    }
+
+    public boolean isDidCreatorFailed() {
+        return didCreatorFailed;
+    }
+
+    public void setDidCreatorFailed(boolean didCreatorFailed) {
+        this.didCreatorFailed = didCreatorFailed;
     }
 
     @Override

@@ -23,13 +23,13 @@
     <string name="title_activity_main2">Main2Activity</string>
 
     <!-- Strings related to main activity -->
-    <string name="title_fragment_timeline">Global</string>
-    <string name="title_fragment_followings">Followings</string>
+    <string name="title_fragment_timeline">Discover</string>
+    <string name="title_fragment_followings">Timeline</string>
     <string name="title_fragment_profile">Profile</string>
 
     <!-- Strings related to not2dos -->
-    <string name="action_report">Report Failure</string>
     <string name="action_share">Share</string>
+    <string name="action_edit">Edit</string>
     <string name="action_remove">Remove</string>
 
 

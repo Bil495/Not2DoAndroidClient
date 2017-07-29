@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -57,6 +56,9 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
     private UserModel user;
     private List<Not2DoModel> participated;
     private List<Not2DoModel> created;
+
+    NotDoFragment createdFragment;
+    NotDoFragment participatedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,17 +135,17 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
             Log.d("Tag", (position+1) + " fragment olusturuldu");
             switch (position) {
                 case 0:
-                    NotDoFragment fragment = new NotDoFragment();
+                    createdFragment = new NotDoFragment();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("list", (Serializable) created);
-                    fragment.setArguments(bundle);
-                    return fragment;
+                    createdFragment.setArguments(bundle);
+                    return createdFragment;
                 case 1:
-                    NotDoFragment fragment2 = new NotDoFragment();
+                    participatedFragment = new NotDoFragment();
                     Bundle bundle2 = new Bundle();
                     bundle2.putSerializable("list", (Serializable) participated);
-                    fragment2.setArguments(bundle2);
-                    return fragment2;
+                    participatedFragment.setArguments(bundle2);
+                    return participatedFragment;
             }
             return new NotDoFragment();
         }
@@ -169,7 +171,7 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
     private void requestToServer(){
         final String tag_string_req = "req_user_profile";
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.getURLUserProfile(user.getUsername()), new Response.Listener<String>() {
+                AppConfig.getURLUserProfile(user.getId()), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -177,38 +179,58 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
+                    boolean error = false;//jObj.getBoolean("error");
 
                     // Check for error node in json
                     if (!error) {
                         // user successfully logged in
                         JSONObject oUser = jObj.getJSONObject("user");
                         user = new UserModel();
+                        user.setId(oUser.getInt("id"));
                         user.setUsername(oUser.getString("username"));
                         user.setName(oUser.getString("name"));
                         user.setSurname(oUser.getString("surname"));
-                        user.setProfilePic(oUser.getString("pp_url"));
+                        //user.setProfilePic(oUser.getString("pp_url"));
                         user.setBio(oUser.getString("bio"));
-                        user.setFollowing(oUser.getInt("followed"));
-                        user.setFollowers(oUser.getInt("followers"));
-                        JSONArray arr = jObj.getJSONArray("participating");
-                        JSONArray arr2 = jObj.getJSONArray("owning");
+                        user.setFollowing(jObj.getInt("followings_count"));
+                        user.setFollowers(jObj.getInt("followers_count"));
+                        JSONArray arr = jObj.getJSONArray("participated_items");
+                        JSONArray arr2 = jObj.getJSONArray("created_items");
                         user.setPosts(arr2.length());
                         user.setParticipating(arr.length());
-                        for (int i = 0; i < arr.length(); i++){
-                            JSONObject obj = arr.getJSONObject(i);
+                        user.setFollow(jObj.getBoolean("is_following"));
 
+                        JSONArray usersArr = jObj.getJSONArray("users");
+                        Map<Integer, UserModel> users = new HashMap<>();
+                        for (int i = 0; i < usersArr.length(); i++) {
+                            JSONObject obj = usersArr.getJSONObject(i);
 
                             UserModel user = new UserModel();
+                            user.setId(obj.getInt("id"));
                             user.setUsername(obj.getString("username"));
                             user.setName(obj.getString("name"));
                             user.setSurname(obj.getString("surname"));
-                            user.setProfilePic(obj.getString("pp_url"));
+                            //user.setProfilePic(obj.getString("pp_url"));
+                            user.setBio("bio");
+
+                            users.put(user.getId(), user);
+                        }
+                        JSONObject participants = jObj.getJSONObject("participants_count");
+                        JSONObject failures = jObj.getJSONObject("failed_participants_count");
+                        JSONObject myFails = jObj.getJSONObject("failed?");
+                        JSONObject myParticipates = jObj.getJSONObject("participated?");
+
+                        for (int i = 0; i < arr.length(); i++){
+                            JSONObject obj = arr.getJSONObject(i);
 
                             Not2DoModel not2Do = new Not2DoModel();
-                            not2Do.setId(obj.getLong("not2do_id"));
-                            not2Do.setContent(obj.getString("content"));
-                            not2Do.setParticipants(obj.getInt("participants"));
+                            not2Do.setId(obj.getLong("id"));
+                            not2Do.setContent(obj.getString("title"));
+                            not2Do.setDidCreatorFailed(obj.getBoolean("failed"));
+                            not2Do.setParticipants(participants.getInt(Long.toString(not2Do.getId())));
+                            not2Do.setFailures(failures.getInt(Long.toString(not2Do.getId())));
+                            not2Do.setDidParticipate(myParticipates.getBoolean(Long.toString(not2Do.getId())));
+                            not2Do.setDidFail(myFails.getBoolean(Long.toString(not2Do.getId())));
 
                             Date date = null;
                             try {
@@ -217,17 +239,22 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
 
                             }
                             not2Do.setCreatedAt(date);
-                            not2Do.setCreator(user);
+                            not2Do.setCreator(users.get(obj.getInt("user_id")));
 
                             participated.add(not2Do);
                             LikeManager.LIKES.put(not2Do.getId(), not2Do);
                         }
+                        participatedFragment.refreshList(participated);
                         for (int i = 0; i < arr2.length(); i++){
                             JSONObject obj = arr2.getJSONObject(i);
                             Not2DoModel not2Do = new Not2DoModel();
-                            not2Do.setId(obj.getLong("not2do_id"));
-                            not2Do.setContent(obj.getString("content"));
-                            not2Do.setParticipants(obj.getInt("participants"));
+                            not2Do.setId(obj.getLong("id"));
+                            not2Do.setContent(obj.getString("title"));
+                            not2Do.setDidCreatorFailed(obj.getBoolean("failed"));
+                            not2Do.setParticipants(participants.getInt(Long.toString(not2Do.getId())));
+                            not2Do.setFailures(failures.getInt(Long.toString(not2Do.getId())));
+                            not2Do.setDidParticipate(myParticipates.getBoolean(Long.toString(not2Do.getId())));
+                            not2Do.setDidFail(myFails.getBoolean(Long.toString(not2Do.getId())));
 
                             Date date = null;
                             try {
@@ -241,6 +268,7 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
                             created.add(not2Do);
                             LikeManager.LIKES.put(not2Do.getId(), not2Do);
                         }
+                        createdFragment.refreshList(created);
                         UserProfileViewHolder viewHolder =
                                 new UserProfileViewHolder(getBaseContext(), findViewById(android.R.id.content));
                         viewHolder.bindView(user);
@@ -287,17 +315,10 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
                 SessionManager sessionManager = new SessionManager(getBaseContext());
-                params.put("username", sessionManager.getUsername());
+                params.put("user_id", sessionManager.getUserID().toString());
                 params.put("token", sessionManager.getToken());
 
                 return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                return headers;
             }
 
         };

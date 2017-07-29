@@ -116,25 +116,26 @@ public class ParticipantsActivity extends AppCompatActivity {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
+                    boolean error = false;//jObj.getBoolean("error");
 
                     // Check for error node in json
                     if (!error) {
                         // user successfully logged in
-                        JSONArray arr = jObj.getJSONArray("participants");
+                        JSONArray arr = jObj.getJSONArray("users");
                         for (int i = 0; i < arr.length(); i++){
                             JSONObject obj = arr.getJSONObject(i);
 
 
                             UserModel user = new UserModel();
+                            user.setId(obj.getInt("id"));
                             user.setUsername(obj.getString("username"));
                             user.setName(obj.getString("name"));
                             user.setSurname(obj.getString("surname"));
-                            user.setProfilePic(obj.getString("pp_url"));
+                            //user.setProfilePic(obj.getString("pp_url"));
                             users.add(user);
                         }
                         mAdapter.notifyDataSetChanged();
-                        Toast.makeText(getBaseContext(), "Participants loaded.", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getBaseContext(), "Participants loaded.", Toast.LENGTH_LONG).show();
 
 
                     } else {
@@ -166,7 +167,7 @@ public class ParticipantsActivity extends AppCompatActivity {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
                 SessionManager sessionManager = new SessionManager(getBaseContext());
-                params.put("username", sessionManager.getUsername());
+                params.put("user_id", sessionManager.getUserID().toString());
                 params.put("token", sessionManager.getToken());
 
                 return params;

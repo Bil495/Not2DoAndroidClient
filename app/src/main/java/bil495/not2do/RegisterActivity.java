@@ -127,11 +127,11 @@ public class RegisterActivity extends Activity {
                     if (!error) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
-                        String username = jObj.getString("username");
+                        int userId = jObj.getInt("user_id");
                         String token = jObj.getString("token");
 
                         SessionManager sessionManager = new SessionManager(getApplicationContext());
-                        sessionManager.setUsernameAndToken(username, token);
+                        sessionManager.setUsernameAndToken(userId, token);
                         sessionManager.setLogin(true);
 
                         Toast.makeText(getApplicationContext(), "User successfully registered.", Toast.LENGTH_LONG).show();

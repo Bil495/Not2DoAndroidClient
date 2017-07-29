@@ -14,6 +14,7 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import bil495.not2do.CreateNot2DoActivity;
 import bil495.not2do.ParticipantsActivity;
 import bil495.not2do.R;
 import bil495.not2do.UserProfileActivity;
@@ -58,8 +59,8 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<Not2DoViewH
             @Override
             public void onClick(View v) {
                 SessionManager sessionManager = new SessionManager(mContext);
-                showPopupMenu(holder.mOverFlow, holder.mItem.getCreator().getUsername()
-                        .equals(sessionManager.getUsername()));
+                showPopupMenu(holder.mOverFlow, holder.mItem, holder.mItem.getCreator().getId()
+                        .equals(sessionManager.getUserID()));
                 notifyDataSetChanged();
             }
         });
@@ -79,15 +80,15 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<Not2DoViewH
     /**
      * Showing popup menu when tapping on 3 dots
      */
-    private void showPopupMenu(View view, boolean owner) {
+    private void showPopupMenu(View view, Not2DoModel not2DoModel, boolean owner) {
         // inflate menu
         PopupMenu popup = new PopupMenu(mContext, view);
         MenuInflater inflater = popup.getMenuInflater();
         if(owner)
-            inflater.inflate(R.menu.menu_not2do, popup.getMenu());
+            inflater.inflate(R.menu.menu_not2do_creator, popup.getMenu());
         else
             inflater.inflate(R.menu.menu_not2do, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
+        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(not2DoModel));
         popup.show();
     }
 
@@ -101,7 +102,9 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<Not2DoViewH
      */
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
 
-        public MyMenuItemClickListener() {
+        Not2DoModel not2DoModel;
+        public MyMenuItemClickListener(Not2DoModel not2DoModel) {
+            this.not2DoModel = not2DoModel;
         }
 
         @Override
@@ -109,6 +112,13 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<Not2DoViewH
             switch (menuItem.getItemId()) {
                 case R.id.action_share:
                     Toast.makeText(mContext, "Sharing", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.action_edit:
+                    Toast.makeText(mContext, "Editing", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext, CreateNot2DoActivity.class);
+                    intent.putExtra("not2do", not2DoModel);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
                     return true;
                 case R.id.action_remove:
                     Toast.makeText(mContext, "Removing", Toast.LENGTH_SHORT).show();

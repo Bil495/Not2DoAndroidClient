@@ -3,26 +3,46 @@ package bil495.not2do.holder;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import bil495.not2do.LoginActivity;
+import bil495.not2do.MainActivity;
 import bil495.not2do.ParticipantsActivity;
 import bil495.not2do.R;
 import bil495.not2do.UserProfileActivity;
 import bil495.not2do.app.AppConfig;
+import bil495.not2do.app.AppController;
 import bil495.not2do.fragment.MyNotDoRecyclerViewAdapter;
+import bil495.not2do.helper.SessionManager;
 import bil495.not2do.model.Not2DoModel;
 import bil495.not2do.model.UserModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by burak on 7/25/2017.
  */
 
 public class Not2DoViewHolder extends RecyclerView.ViewHolder {
+    public static SessionManager sessionManager;
     private Context context;
     public final View mView;
     @BindView(R.id.fullname)
@@ -70,37 +90,40 @@ public class Not2DoViewHolder extends RecyclerView.ViewHolder {
         mUsernameView.setOnClickListener(listener);
         mProfilePicView.setOnClickListener(listener);
 
+        if (mItem.getCreator().getId().equals(sessionManager.getUserID())){
+            btnLike.setVisibility(View.GONE);
+            btnFail.setVisibility(View.VISIBLE);
+            btnFail.setImageResource(mItem.isDidCreatorFailed() ? R.drawable.ic_fire_red : R.drawable.ic_fire_outline);
+        }
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mItem.isDidParticipate()){
-                    mItem.setParticipants(mItem.getParticipants() - 1);
-                    if(mItem.isDidFail()){
-                        mItem.setFailures(mItem.getFailures()-1);
-                        tsFailsCounter.setText(mItem.getFailures() + " failures");
-                        mItem.setDidFail(false);
-                    }
-                }else{
+                if(!mItem.isDidParticipate()){
+                    serverRequest(AppConfig.getURLParticipate(not2DoModel.getId()));
                     mItem.setParticipants(mItem.getParticipants() + 1);
+                    mItem.setDidParticipate(true);
+                    setButtons();
+                    updateLikesCounter(true, mItem.getParticipants());
                 }
-                mItem.setDidParticipate(!mItem.isDidParticipate());
-                setButtons();
-                updateLikesCounter(true, mItem.getParticipants());
             }
         });
 
         btnFail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mItem.isDidParticipate()){
-                    mItem.setDidFail(!mItem.isDidFail());
-                    setButtons();
-                    if(mItem.isDidFail()){
-                        mItem.setFailures(mItem.getFailures()+1);
-                    }else{
-                        mItem.setFailures(mItem.getFailures()-1);
+                if (mItem.getCreator().getId().equals(sessionManager.getUserID())){
+                    if(!mItem.isDidFail()){
+                        serverRequest(AppConfig.getURLFailure(not2DoModel.getId()));
+                        btnFail.setImageResource(R.drawable.ic_fire_red);
                     }
-                    tsFailsCounter.setText(mItem.getFailures() + " failures");
+                }else{
+                    if(!mItem.isDidFail()){
+                        serverRequest(AppConfig.getURLFailure(not2DoModel.getId()));
+                        mItem.setFailures(mItem.getFailures()+1);
+                        mItem.setDidFail(true);
+                        setButtons();
+                        tsFailsCounter.setText(mItem.getFailures() + " failures");
+                    }
                 }
             }
         });
@@ -115,6 +138,55 @@ public class Not2DoViewHolder extends RecyclerView.ViewHolder {
                 context.startActivity(intent);
             }
         });
+
+        tsFailsCounter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ParticipantsActivity.class);
+                intent.putExtra("url", AppConfig.getURLFailuresOfNot2Do(mItem.getId()));
+                intent.putExtra("title", "Failures");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+    }
+
+    private void serverRequest(String url){
+        // Tag used to cancel the request
+        String tag_string_req = "req_login";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Participate Response: " + response.toString());
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Participate Error: " + error.getMessage());
+                Toast.makeText(context,
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<String, String>();
+                SessionManager sessionManager = new SessionManager(context);
+                params.put("user_id", sessionManager.getUserID().toString());
+                params.put("token", sessionManager.getToken());
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
     private void setButtons(){

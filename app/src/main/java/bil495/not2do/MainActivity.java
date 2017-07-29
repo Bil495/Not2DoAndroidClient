@@ -17,8 +17,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import bil495.not2do.app.AppConfig;
 import bil495.not2do.fragment.NotDoFragment;
 import bil495.not2do.helper.SessionManager;
+import bil495.not2do.holder.Not2DoViewHolder;
 import bil495.not2do.model.Not2DoModel;
 
 public class MainActivity extends AppCompatActivity implements NotDoFragment.OnListFragmentInteractionListener {
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NotDoFragment.OnL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Not2DoViewHolder.sessionManager = new SessionManager(getBaseContext());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -60,9 +62,8 @@ public class MainActivity extends AppCompatActivity implements NotDoFragment.OnL
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                //TODO Start new not2do form activity here
+                Intent intent = new Intent(getBaseContext(), CreateNot2DoActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -122,11 +123,23 @@ public class MainActivity extends AppCompatActivity implements NotDoFragment.OnL
             Log.d("Tag", (position+1) + " fragment olusturuldu");
             switch (position) {
                 case 0:
-                    return new NotDoFragment();
+                    NotDoFragment fragment0 = new NotDoFragment();
+                    Bundle bundle0 = new Bundle();
+                    bundle0.putString("url", AppConfig.getURLGlobalTimeline(0));
+                    fragment0.setArguments(bundle0);
+                    return fragment0;
                 case 1:
-                    return new NotDoFragment();
+                    NotDoFragment fragment1 = new NotDoFragment();
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString("url", AppConfig.getURLFriendsTimeline(0));
+                    fragment1.setArguments(bundle1);
+                    return fragment1;
                 case 2:
-                    return new NotDoFragment();
+                    NotDoFragment fragment2 = new NotDoFragment();
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putString("url", AppConfig.getURLFriendsTimeline(0));
+                    fragment2.setArguments(bundle2);
+                    return fragment2;
             }
             return new NotDoFragment();
         }

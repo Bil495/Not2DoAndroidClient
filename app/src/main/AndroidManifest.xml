@@ -46,6 +46,11 @@
             android:label="Participants"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreateNot2DoActivity"
+            android:label="Participants"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

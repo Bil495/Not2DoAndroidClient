@@ -69,13 +69,17 @@ public class NotDoFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             list = (List<Not2DoModel>) bundle.getSerializable("list");
-            Log.d("zaa", "oley beee");
-            Log.d("zaa", list.size() + "");
-        }else{
-            list = new ArrayList<>();
-            Log.d("zaa", "olamazzz");
-            requestToServer(0);
+            if(list == null){
+                list = new ArrayList<>();
+                String url = bundle.getString("url");
+                requestToServer(url);
+            }
         }
+    }
+
+    public void refreshList(List<Not2DoModel> list){
+        this.list = list;
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -118,14 +122,14 @@ public class NotDoFragment extends Fragment {
         mListener = null;
     }
 
-    private void requestToServer(int lessThan){
+    private void requestToServer(String url){
         String tag_string_req = "req_global_timeline";
 
         pDialog.setMessage("Getting timeline ...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.getURLGlobalTimeline(lessThan), new Response.Listener<String>() {
+                url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -134,26 +138,44 @@ public class NotDoFragment extends Fragment {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
+                    boolean error = false;
 
                     // Check for error node in json
                     if (!error) {
                         // user successfully logged in
-                        JSONArray arr = jObj.getJSONArray("not2dos");
+                        JSONArray usersArr = jObj.getJSONArray("users");
+                        Map<Integer, UserModel> users = new HashMap<>();
+                        for (int i = 0; i < usersArr.length(); i++) {
+                            JSONObject obj = usersArr.getJSONObject(i);
+
+                            UserModel user = new UserModel();
+                            user.setId(obj.getInt("id"));
+                            user.setUsername(obj.getString("username"));
+                            user.setName(obj.getString("name"));
+                            user.setSurname(obj.getString("surname"));
+                            //user.setProfilePic(obj.getString("pp_url"));
+                            user.setBio("bio");
+
+                            users.put(user.getId(), user);
+                        }
+                        JSONObject participants = jObj.getJSONObject("participants_count");
+                        JSONObject failures = jObj.getJSONObject("failed_participants_count");
+                        JSONObject myFails = jObj.getJSONObject("failed?");
+                        JSONObject myParticipates = jObj.getJSONObject("participated?");
+
+                        JSONArray arr = jObj.getJSONArray("items");
                         for (int i = 0; i < arr.length(); i++){
                             JSONObject obj = arr.getJSONObject(i);
 
 
-                            UserModel user = new UserModel();
-                            user.setUsername(obj.getString("username"));
-                            user.setName(obj.getString("name"));
-                            user.setSurname(obj.getString("surname"));
-                            user.setProfilePic(obj.getString("pp_url"));
-
                             Not2DoModel not2Do = new Not2DoModel();
-                            not2Do.setId(obj.getLong("not2do_id"));
-                            not2Do.setContent(obj.getString("content"));
-                            not2Do.setParticipants(obj.getInt("participants"));
+                            not2Do.setId(obj.getLong("id"));
+                            not2Do.setContent(obj.getString("title"));
+                            not2Do.setDidCreatorFailed(obj.getBoolean("failed"));
+                            not2Do.setParticipants(participants.getInt(Long.toString(not2Do.getId())));
+                            not2Do.setFailures(failures.getInt(Long.toString(not2Do.getId())));
+                            not2Do.setDidParticipate(myParticipates.getBoolean(Long.toString(not2Do.getId())));
+                            not2Do.setDidFail(myFails.getBoolean(Long.toString(not2Do.getId())));
 
                             Date date = null;
                             try {
@@ -162,13 +184,12 @@ public class NotDoFragment extends Fragment {
 
                             }
                             not2Do.setCreatedAt(date);
-                            not2Do.setCreator(user);
+                            not2Do.setCreator(users.get(obj.getInt("user_id")));
 
                             list.add(not2Do);
                             LikeManager.LIKES.put(not2Do.getId(), not2Do);
                         }
                         mAdapter.notifyDataSetChanged();
-                        Toast.makeText(getContext(), "Timeline is here.", Toast.LENGTH_LONG).show();
 
 
                     } else {
@@ -200,7 +221,7 @@ public class NotDoFragment extends Fragment {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
                 SessionManager sessionManager = new SessionManager(getContext());
-                params.put("username", sessionManager.getUsername());
+                params.put("user_id", "2");
                 params.put("token", sessionManager.getToken());
 
                 return params;
