@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -93,11 +94,23 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_fragment_list, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem)
     {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.action_reload:
+                participated = new ArrayList<Not2DoModel>();
+                created = new ArrayList<Not2DoModel>();
+                requestToServer();
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
@@ -323,6 +336,7 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
 
         };
 
+        setTitle(user.getName() + " " + user.getSurname());
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }

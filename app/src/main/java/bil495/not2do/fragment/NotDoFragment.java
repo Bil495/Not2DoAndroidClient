@@ -2,12 +2,16 @@ package bil495.not2do.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -21,7 +25,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import bil495.not2do.LoginActivity;
 import bil495.not2do.R;
+import bil495.not2do.UserProfileActivity;
 import bil495.not2do.app.AppConfig;
 import bil495.not2do.app.AppController;
 import bil495.not2do.helper.LikeManager;
@@ -33,6 +39,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +72,6 @@ public class NotDoFragment extends Fragment {
         pDialog = new ProgressDialog(getContext());
         pDialog.setCancelable(false);
 
-
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             list = (List<Not2DoModel>) bundle.getSerializable("list");
@@ -73,6 +79,7 @@ public class NotDoFragment extends Fragment {
                 list = new ArrayList<>();
                 String url = bundle.getString("url");
                 requestToServer(url);
+                setHasOptionsMenu(true);
             }
         }
     }
@@ -120,6 +127,29 @@ public class NotDoFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_fragment_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_reload) {
+            String url = getArguments().getString("url");
+            list = new ArrayList<>();
+            requestToServer(url);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void requestToServer(String url){
