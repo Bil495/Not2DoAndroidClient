@@ -14,8 +14,8 @@ public class AppConfig {
     public static String HOST = "https://not2do-sprint2-ferdem.c9users.io/users";
 
     //Api paths
-    public static String PATH_LOGIN = "/login";
-    public static String PATH_SIGN_UP = "";
+    public static String PATH_LOGIN = "/log_in";
+    public static String PATH_SIGN_UP = "/sign_up";
     public static String PATH_FOLLOW = "/follow?profile_id=%d"; //follow/:username
     public static String PATH_UNFOLLOW = "/unfollow?profile_id=%d"; //unfollow/:username
     public static String PATH_GET_NOT2DO = "not2do/%d"; //not2do/:not2do_id
@@ -23,7 +23,8 @@ public class AppConfig {
     public static String PATH_GLOBAL_TIMELINE = "/discover"; //timeline/:less
     public static String PATH_MY_PROFILE = "my_profile";
     public static String PATH_USER_PROFILE = "/profile?profile_id=%d"; //user/:username
-    public static String PATH_CREATE_NOT2DO = "not2do";
+    public static String PATH_CREATE_NOT2DO = "/create_item";
+    public static String PATH_DELETE_NOT2DO = "/delete_item?item_id=%d";
     public static String PATH_PARTICIPANTS = "/participants?item_id=%d"; //not2do/:not2do_id/participants
     public static String PATH_FAILURES = "/failed_participants?item_id=%d"; //not2do/:not2do_id/participants
     public static String PATH_PARTICIPATE = "/participate?item_id=%d"; //participate/:not2do_id
@@ -63,6 +64,11 @@ public class AppConfig {
     public static String getURLCreateNot2Do(){
         return HOST + PATH_CREATE_NOT2DO;
     }
+
+    public static String getURLDeleteNot2Do(long not2DoId){
+        return HOST + String.format(PATH_DELETE_NOT2DO, not2DoId);
+    }
+
     public static String getURLParticipantsOfNot2Do(long not2DoId){
         return HOST + String.format(PATH_PARTICIPANTS, not2DoId);
     }

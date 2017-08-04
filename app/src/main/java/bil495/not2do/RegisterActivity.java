@@ -128,10 +128,10 @@ public class RegisterActivity extends Activity {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
                         int userId = jObj.getInt("user_id");
-                        String token = jObj.getString("token");
+                        //String token = jObj.getString("token");
 
                         SessionManager sessionManager = new SessionManager(getApplicationContext());
-                        sessionManager.setUsernameAndToken(userId, token);
+                        sessionManager.setUsernameAndToken(userId, Integer.toString(userId));
                         sessionManager.setLogin(true);
 
                         Toast.makeText(getApplicationContext(), "User successfully registered.", Toast.LENGTH_LONG).show();
@@ -175,6 +175,7 @@ public class RegisterActivity extends Activity {
                 params.put("username", username);
                 params.put("email", email);
                 params.put("password", password);
+                params.put("password_confirmation", password);
 
                 return params;
             }

@@ -221,7 +221,7 @@ public class NotDoFragment extends Fragment {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
                 SessionManager sessionManager = new SessionManager(getContext());
-                params.put("user_id", "2");
+                params.put("user_id", Integer.toString(sessionManager.getUserID()));
                 params.put("token", sessionManager.getToken());
 
                 return params;

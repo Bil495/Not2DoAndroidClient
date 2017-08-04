@@ -22,6 +22,7 @@ import bil495.not2do.fragment.NotDoFragment;
 import bil495.not2do.helper.SessionManager;
 import bil495.not2do.holder.Not2DoViewHolder;
 import bil495.not2do.model.Not2DoModel;
+import bil495.not2do.model.UserModel;
 
 public class MainActivity extends AppCompatActivity implements NotDoFragment.OnListFragmentInteractionListener {
 
@@ -93,6 +94,13 @@ public class MainActivity extends AppCompatActivity implements NotDoFragment.OnL
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
+        }else if(id == R.id.action_my_profile){
+            SessionManager sessionManager = new SessionManager(this);
+            Intent intent = new Intent(getBaseContext(), UserProfileActivity.class);
+            UserModel userModel = new UserModel();
+            userModel.setId(sessionManager.getUserID());
+            intent.putExtra("user", userModel);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -147,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements NotDoFragment.OnL
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
