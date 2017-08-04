@@ -120,8 +120,9 @@ public class LoginActivity extends Activity {
 
                         Integer userId = jObj.getInt("user_id");
                         String token = jObj.getString("token");
+                        String username = jObj.getString("username");
 
-                        session.setUsernameAndToken(userId, token);
+                        session.setUsernameAndToken(userId, username, token);
                         session.setLogin(true);
 
                         Toast.makeText(getApplicationContext(), "User successfully logged in.", Toast.LENGTH_LONG).show();

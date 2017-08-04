@@ -47,7 +47,7 @@ public class RegisterActivity extends Activity {
 
         inputName = (EditText) findViewById(R.id.name);
         inputSurName = (EditText) findViewById(R.id.surname);
-        inputUserName = (EditText) findViewById(R.id.name);
+        inputUserName = (EditText) findViewById(R.id.username);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         btnRegister = (Button) findViewById(R.id.btnRegister);
@@ -128,10 +128,11 @@ public class RegisterActivity extends Activity {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
                         int userId = jObj.getInt("user_id");
-                        //String token = jObj.getString("token");
+                        String token = jObj.getString("token");
+                        String username1 = jObj.getString("username");
 
                         SessionManager sessionManager = new SessionManager(getApplicationContext());
-                        sessionManager.setUsernameAndToken(userId, Integer.toString(userId));
+                        sessionManager.setUsernameAndToken(userId, username1, token);
                         sessionManager.setLogin(true);
 
                         Toast.makeText(getApplicationContext(), "User successfully registered.", Toast.LENGTH_LONG).show();

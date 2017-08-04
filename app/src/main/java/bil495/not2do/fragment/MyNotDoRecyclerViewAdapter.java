@@ -158,7 +158,6 @@ public class MyNotDoRecyclerViewAdapter extends RecyclerView.Adapter<Not2DoViewH
                     JSONObject jObj = new JSONObject(response);
                     Toast.makeText(mContext,
                             "REMOVED", Toast.LENGTH_LONG).show();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

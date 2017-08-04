@@ -89,7 +89,7 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
         participated = new ArrayList<Not2DoModel>();
         created = new ArrayList<Not2DoModel>();
 
-        setTitle(user.getName() + " " + user.getSurname());
+        setTitle("@" + user.getUsername());
         requestToServer();
     }
 
@@ -108,8 +108,8 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
                 onBackPressed();
                 return true;
             case R.id.action_reload:
-                participated = new ArrayList<Not2DoModel>();
-                created = new ArrayList<Not2DoModel>();
+                participated.clear();
+                created.clear();
                 requestToServer();
                 return true;
             default:
@@ -335,8 +335,6 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
             }
 
         };
-
-        setTitle(user.getName() + " " + user.getSurname());
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }

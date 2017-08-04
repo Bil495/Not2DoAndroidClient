@@ -49,6 +49,8 @@ public class Not2DoViewHolder extends RecyclerView.ViewHolder {
     TextView mFullNameView;
     @BindView(R.id.username)
     TextView mUsernameView;
+    @BindView(R.id.failed)
+    TextView mFailedView;
     @BindView(R.id.content)
     TextView mContentView;
     @BindView(R.id.thumbnail)
@@ -90,6 +92,7 @@ public class Not2DoViewHolder extends RecyclerView.ViewHolder {
         mUsernameView.setOnClickListener(listener);
         mProfilePicView.setOnClickListener(listener);
 
+        mFailedView.setVisibility(mItem.isDidCreatorFailed() ? View.VISIBLE : View.INVISIBLE);
         if (mItem.getCreator().getId().equals(sessionManager.getUserID())){
             btnLike.setVisibility(View.GONE);
             btnFail.setVisibility(View.VISIBLE);
@@ -115,6 +118,8 @@ public class Not2DoViewHolder extends RecyclerView.ViewHolder {
                     if(!mItem.isDidFail()){
                         serverRequest(AppConfig.getURLFailure(not2DoModel.getId()));
                         btnFail.setImageResource(R.drawable.ic_fire_red);
+                        mItem.setDidCreatorFailed(true);
+                        mFailedView.setVisibility(View.VISIBLE);
                     }
                 }else{
                     if(!mItem.isDidFail()){

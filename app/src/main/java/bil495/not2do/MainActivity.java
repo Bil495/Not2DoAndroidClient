@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements NotDoFragment.OnL
             Intent intent = new Intent(getBaseContext(), UserProfileActivity.class);
             UserModel userModel = new UserModel();
             userModel.setId(sessionManager.getUserID());
+            userModel.setUsername(sessionManager.getUsername());
             intent.putExtra("user", userModel);
             startActivity(intent);
         }

@@ -34,6 +34,22 @@
                 android:layout_toEndOf="@+id/fullname"
                 android:textColor="@color/cardview_shadow_start_color" />
 
+            <TextView
+                android:id="@+id/failed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/songs_count_padding_bottom"
+                android:paddingRight="@dimen/album_title_padding"
+                android:textSize="8dp"
+                android:text="!FAILED"
+                android:textColor="#d50000"
+                android:layout_alignBaseline="@+id/username"
+                android:layout_alignBottom="@+id/username"
+                android:layout_toEndOf="@+id/username"
+                android:fontFamily="monospace"
+                android:typeface="monospace"
+                android:lineSpacingExtra="24sp" />
+
 
             <TextView
                 android:id="@+id/fullname"

@@ -144,7 +144,7 @@ public class NotDoFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_reload) {
             String url = getArguments().getString("url");
-            list = new ArrayList<>();
+            list.clear();
             requestToServer(url);
             return true;
         }

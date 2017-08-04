@@ -28,6 +28,7 @@ public class SessionManager {
     private static final String KEY_IS_LOGGEDIN = "isLoggedIn";
     private static final String KEY_TOKEN = "token";
     private static final String KEY_ID = "id";
+    private static final String KEY_USERNAME = "username";
 
     public SessionManager(Context context) {
         this._context = context;
@@ -45,9 +46,10 @@ public class SessionManager {
         Log.d(TAG, "User login session modified!");
     }
 
-    public void setUsernameAndToken(final int id, final String token) {
+    public void setUsernameAndToken(final int id, final String username, final String token) {
 
         editor.putInt(KEY_ID, id);
+        editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_TOKEN, token);
 
         // commit changes
@@ -62,6 +64,10 @@ public class SessionManager {
 
     public Integer getUserID(){
         return pref.getInt(KEY_ID, 0);
+    }
+
+    public String getUsername(){
+        return pref.getString(KEY_USERNAME, "");
     }
 
     public String getToken(){
