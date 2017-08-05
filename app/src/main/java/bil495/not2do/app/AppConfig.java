@@ -6,12 +6,12 @@ import java.util.Locale;
 
 /**
  * Created by burak on 7/6/2017.
- */
+ */G
 
 public class AppConfig {
     //TODO Change the host to heroku server when it is ready
     // Server url
-    public static String HOST = "https://not2do-sprint2-ferdem.c9users.io/users";
+    public static String HOST = " https://not2do.herokuapp.com/users";
 
     //Api paths
     public static String PATH_LOGIN = "/log_in";
