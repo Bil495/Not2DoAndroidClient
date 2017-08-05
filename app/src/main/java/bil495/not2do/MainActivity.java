@@ -3,7 +3,6 @@ package bil495.not2do;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -109,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements NotDoFragment.OnL
 
     @Override
     public void onListFragmentInteraction(Not2DoModel item) {
-        //TODO Start not2do activity here
         Intent intent = new Intent(this, Not2DoActivity.class);
         intent.putExtra("not2do", item);
         startActivity(intent);

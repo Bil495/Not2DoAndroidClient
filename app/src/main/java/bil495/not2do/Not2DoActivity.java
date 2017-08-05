@@ -1,23 +1,9 @@
 package bil495.not2do;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.sackcentury.shinebuttonlib.ShineButton;
-
-import bil495.not2do.fragment.MyNotDoRecyclerViewAdapter;
 import bil495.not2do.helper.LikeManager;
 import bil495.not2do.holder.Not2DoViewHolder;
 import bil495.not2do.model.Not2DoModel;

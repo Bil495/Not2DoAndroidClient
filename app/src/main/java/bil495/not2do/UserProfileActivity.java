@@ -125,7 +125,6 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
 
     @Override
     public void onListFragmentInteraction(Not2DoModel item) {
-        //TODO Start not2do activity here
         Intent intent = new Intent(this, Not2DoActivity.class);
         intent.putExtra("not2do", item);
         startActivity(intent);

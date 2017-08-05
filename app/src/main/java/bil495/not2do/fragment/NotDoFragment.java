@@ -2,7 +2,6 @@ package bil495.not2do.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,9 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import bil495.not2do.LoginActivity;
 import bil495.not2do.R;
-import bil495.not2do.UserProfileActivity;
 import bil495.not2do.app.AppConfig;
 import bil495.not2do.app.AppController;
 import bil495.not2do.helper.LikeManager;
@@ -39,7 +36,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 

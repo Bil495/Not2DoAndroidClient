@@ -24,11 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import bil495.not2do.app.AppConfig;
 import bil495.not2do.app.AppController;
 import bil495.not2do.fragment.MyUserRecyclerViewAdapter;
 import bil495.not2do.helper.SessionManager;
-import bil495.not2do.model.Not2DoModel;
 import bil495.not2do.model.UserModel;
 
 import static android.content.ContentValues.TAG;

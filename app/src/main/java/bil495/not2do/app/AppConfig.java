@@ -9,7 +9,6 @@ import java.util.Locale;
  */
 
 public class AppConfig {
-    //TODO Change the host to heroku server when it is ready
     // Server url
     public static String HOST = "https://not2do.herokuapp.com/users";
 

@@ -25,29 +25,18 @@ import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
-import com.sackcentury.shinebuttonlib.ShineButton;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import bil495.not2do.app.AppConfig;
 import bil495.not2do.app.AppController;
-import bil495.not2do.fragment.MyNotDoRecyclerViewAdapter;
-import bil495.not2do.helper.LikeManager;
 import bil495.not2do.helper.SessionManager;
-import bil495.not2do.holder.Not2DoViewHolder;
-import bil495.not2do.holder.UserProfileViewHolder;
 import bil495.not2do.model.Not2DoModel;
-import bil495.not2do.model.UserModel;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static android.content.ContentValues.TAG;
 
