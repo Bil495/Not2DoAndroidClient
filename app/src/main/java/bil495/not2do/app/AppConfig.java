@@ -15,21 +15,22 @@ public class AppConfig {
     //Api paths
     public static String PATH_LOGIN = "/log_in";
     public static String PATH_SIGN_UP = "/sign_up";
-    public static String PATH_FOLLOW = "/follow?profile_id=%d"; //follow/:username
-    public static String PATH_UNFOLLOW = "/unfollow?profile_id=%d"; //unfollow/:username
-    public static String PATH_GET_NOT2DO = "not2do/%d"; //not2do/:not2do_id
-    public static String PATH_FRIENDS_TIMELINE = "/timeline"; //following/:less
-    public static String PATH_GLOBAL_TIMELINE = "/discover"; //timeline/:less
+    public static String PATH_FOLLOW = "/follow?profile_id=%d";
+    public static String PATH_UNFOLLOW = "/unfollow?profile_id=%d";
+    public static String PATH_GET_NOT2DO = "not2do/%d";
+    public static String PATH_FRIENDS_TIMELINE = "/timeline";
+    public static String PATH_GLOBAL_TIMELINE = "/discover";
     public static String PATH_MY_PROFILE = "my_profile";
-    public static String PATH_USER_PROFILE = "/profile?profile_id=%d"; //user/:username
+    public static String PATH_USER_PROFILE = "/profile?profile_id=%d";
     public static String PATH_CREATE_NOT2DO = "/create_item";
     public static String PATH_DELETE_NOT2DO = "/delete_item?item_id=%d";
-    public static String PATH_PARTICIPANTS = "/participants?item_id=%d"; //not2do/:not2do_id/participants
-    public static String PATH_FAILURES = "/failed_participants?item_id=%d"; //not2do/:not2do_id/participants
-    public static String PATH_PARTICIPATE = "/participate?item_id=%d"; //participate/:not2do_id
-    public static String PATH_FAILURE = "/failed?item_id=%d"; //failed/:not2do_id/:username
-    public static String PATH_FOLLOWERS = "/followers2?profile_id=%d"; //user/:username/followers
-    public static String PATH_FOLLOWINGS = "/followings2?profile_id=%d"; //user/:username/followings
+    public static String PATH_PARTICIPANTS = "/participants?item_id=%d";
+    public static String PATH_FAILURES = "/failed_participants?item_id=%d";
+    public static String PATH_PARTICIPATE = "/participate?item_id=%d";
+    public static String PATH_FAILURE = "/failed?item_id=%d";
+    public static String PATH_FOLLOWERS = "/followers2?profile_id=%d";
+    public static String PATH_FOLLOWINGS = "/followings2?profile_id=%d";
+    public static String PATH_WHO_TO_FOLLOW = "/all";
 
     public static DateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss +0000", Locale.ENGLISH);
 
@@ -53,6 +54,9 @@ public class AppConfig {
     }
     public static String getURLGlobalTimeline(Integer lessThan){
         return HOST + PATH_GLOBAL_TIMELINE;
+    }
+    public static String getURLAllUsers(){
+        return HOST + PATH_WHO_TO_FOLLOW;
     }
     public static String getURLMyProfile(){
         return HOST + PATH_MY_PROFILE;

@@ -101,6 +101,11 @@ public class MainActivity extends AppCompatActivity implements NotDoFragment.OnL
             userModel.setUsername(sessionManager.getUsername());
             intent.putExtra("user", userModel);
             startActivity(intent);
+        }else if(id == R.id.action_everyone){
+            Intent intent = new Intent(getBaseContext(), ParticipantsActivity.class);
+            intent.putExtra("url", AppConfig.getURLAllUsers());
+            intent.putExtra("title", "All Users");
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
