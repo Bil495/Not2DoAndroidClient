@@ -15,20 +15,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import bil495.not2do.LoginActivity;
-import bil495.not2do.MainActivity;
 import bil495.not2do.ParticipantsActivity;
 import bil495.not2do.R;
 import bil495.not2do.UserProfileActivity;
 import bil495.not2do.app.AppConfig;
 import bil495.not2do.app.AppController;
-import bil495.not2do.fragment.MyNotDoRecyclerViewAdapter;
 import bil495.not2do.helper.SessionManager;
 import bil495.not2do.model.Not2DoModel;
 import bil495.not2do.model.UserModel;

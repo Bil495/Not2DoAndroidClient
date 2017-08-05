@@ -47,7 +47,6 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO open user profile
                 Intent intent = new Intent(mContext, UserProfileActivity.class);
                 intent.putExtra("user", holder.mItem);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

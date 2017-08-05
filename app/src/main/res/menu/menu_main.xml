@@ -9,13 +9,18 @@
         android:title="Profile"
         app:showAsAction="always" />
     <item
+        android:id="@+id/action_everyone"
+        android:orderInCategory="101"
+        android:title="@string/action_everyone"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="102"
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_logout"
-        android:orderInCategory="100"
+        android:orderInCategory="103"
         android:title="@string/action_logout"
         app:showAsAction="never" />
 </menu>
