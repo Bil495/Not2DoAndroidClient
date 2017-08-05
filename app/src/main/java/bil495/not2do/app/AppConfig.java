@@ -31,6 +31,7 @@ public class AppConfig {
     public static String PATH_FOLLOWERS = "/followers2?profile_id=%d";
     public static String PATH_FOLLOWINGS = "/followings2?profile_id=%d";
     public static String PATH_WHO_TO_FOLLOW = "/all";
+    public static String PATH_EDIT_PROFILE = "/edit_profile";
 
     public static DateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss +0000", Locale.ENGLISH);
 
@@ -57,6 +58,9 @@ public class AppConfig {
     }
     public static String getURLAllUsers(){
         return HOST + PATH_WHO_TO_FOLLOW;
+    }
+    public static String getURLEditProfile(){
+        return HOST + PATH_EDIT_PROFILE;
     }
     public static String getURLMyProfile(){
         return HOST + PATH_MY_PROFILE;

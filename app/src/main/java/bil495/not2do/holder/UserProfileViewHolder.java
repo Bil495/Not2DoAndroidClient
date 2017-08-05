@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+import bil495.not2do.EditProfileActivity;
 import bil495.not2do.ParticipantsActivity;
 import bil495.not2do.R;
 import bil495.not2do.app.AppConfig;
@@ -87,9 +88,8 @@ public class UserProfileViewHolder extends RecyclerView.ViewHolder {
 
                 SessionManager sessionManager = new SessionManager(context);
                 if(mItem.getId().equals(sessionManager.getUserID())) {
-                    Intent intent = new Intent(context, ParticipantsActivity.class);
-                    intent.putExtra("url", AppConfig.getURLFollowersOfUser(mItem.getId()));
-                    intent.putExtra("title", "Followers of " + mItem.getUsername());
+                    Intent intent = new Intent(context, EditProfileActivity.class);
+                    intent.putExtra("user", userModel);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }else if (mItem.isFollow()){

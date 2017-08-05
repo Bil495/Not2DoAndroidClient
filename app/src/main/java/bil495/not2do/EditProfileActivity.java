@@ -29,21 +29,40 @@ import bil495.not2do.app.AppConfig;
 import bil495.not2do.app.AppController;
 import bil495.not2do.helper.SessionManager;
 import bil495.not2do.model.Not2DoModel;
+import bil495.not2do.model.UserModel;
 
 import static android.content.ContentValues.TAG;
 
 /**
- * Created by burak on 7/18/2017.
+ * Created by burak on 8/5/2017.
  */
 
-public class CreateNot2DoActivity extends AppCompatActivity {
-    EditText mContentView;
+public class EditProfileActivity extends AppCompatActivity {
+    private EditText inputName;
+    private EditText inputSurName;
+    private EditText inputUserName;
+    private EditText inputEmail;
+    private EditText inputBio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_not2do);
-        mContentView = (EditText) findViewById(R.id.content);
+        setContentView(R.layout.activity_edit_profile);
+
+        inputName = (EditText) findViewById(R.id.name);
+        inputSurName = (EditText) findViewById(R.id.surname);
+        inputUserName = (EditText) findViewById(R.id.username);
+        inputEmail = (EditText) findViewById(R.id.email);
+        inputBio = (EditText) findViewById(R.id.bio);
+
+        UserModel user = (UserModel) getIntent().getSerializableExtra("user");
+
+
+        inputName.setText(user.getName());
+        inputSurName.setText(user.getSurname());
+        inputUserName.setText(user.getUsername());
+        inputEmail.setText(user.getEmail());
+        inputBio.setText(user.getBio());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
@@ -52,24 +71,17 @@ public class CreateNot2DoActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
 
-        Not2DoModel not2DoGiven = (Not2DoModel) getIntent().getSerializableExtra("not2do");
-        if(not2DoGiven != null){
-            mContentView.setText(not2DoGiven.getContent());
-            setTitle("Edit Not2Do");
-        }else{
-            setTitle("New  Not2Do");
-        }
-        Button button = (Button) findViewById(R.id.sendBtn);
+
+        Button button = (Button) findViewById(R.id.editBtn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String content = mContentView.getText().toString().trim();
-                if (content.isEmpty()){
-                    Toast.makeText(getBaseContext(),
-                            "Empty", Toast.LENGTH_LONG).show();
-                }else{
-                    requestToServer(content);
-                }
+                String name = inputName.getText().toString().trim();
+                String surname = inputSurName.getText().toString().trim();
+                String username = inputUserName.getText().toString().trim();
+                String email = inputEmail.getText().toString().trim();
+                String bio = inputBio.getText().toString().trim();
+                requestToServer(name, surname, username, email, bio);
             }
         });
     }
@@ -92,14 +104,14 @@ public class CreateNot2DoActivity extends AppCompatActivity {
         finish();
     }
 
-    private void requestToServer(final String content){
-        final String tag_string_req = "req_create_not2do";
+    private void requestToServer(final String name, final String surname, final String username, final String email, final String bio){
+        final String tag_string_req = "req_edit_profile";
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.getURLCreateNot2Do(), new Response.Listener<String>() {
+                AppConfig.getURLEditProfile(), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Timeline Response: " + response.toString());
+                Log.d(TAG, "Edit Profile Response: " + response.toString());
 
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -107,6 +119,12 @@ public class CreateNot2DoActivity extends AppCompatActivity {
 
                     // Check for error node in json
                     if (!error) {
+                        SessionManager session = new SessionManager(getBaseContext());
+                        Integer userId = jObj.getInt("user_id");
+                        String token = jObj.getString("token");
+                        String username = jObj.getString("username");
+
+                        session.setUsernameAndToken(userId, username, token);
                         finish();
 
                     } else {
@@ -151,8 +169,11 @@ public class CreateNot2DoActivity extends AppCompatActivity {
                 SessionManager sessionManager = new SessionManager(getBaseContext());
                 params.put("user_id", sessionManager.getUserID().toString());
                 params.put("token", sessionManager.getToken());
-                params.put("title", content);
-                params.put("description", content);
+                params.put("name", name);
+                params.put("surname", surname);
+                params.put("username", username);
+                params.put("email", email);
+                params.put("bio", bio);
 
                 return params;
             }

@@ -202,6 +202,7 @@ public class UserProfileActivity extends AppCompatActivity  implements NotDoFrag
                         user.setUsername(oUser.getString("username"));
                         user.setName(oUser.getString("name"));
                         user.setSurname(oUser.getString("surname"));
+                        user.setEmail(oUser.getString("email"));
                         //user.setProfilePic(oUser.getString("pp_url"));
                         user.setBio(oUser.getString("bio"));
                         user.setFollowing(jObj.getInt("followings_count"));
