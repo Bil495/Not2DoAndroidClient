@@ -32,6 +32,7 @@ public class AppConfig {
     public static String PATH_FOLLOWINGS = "/followings2?profile_id=%d";
     public static String PATH_WHO_TO_FOLLOW = "/all";
     public static String PATH_EDIT_PROFILE = "/edit_profile";
+    public static String PATH_FCM_REGISTER = "/set_fcm_token";
 
     public static DateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss +0000", Locale.ENGLISH);
 
@@ -55,6 +56,9 @@ public class AppConfig {
     }
     public static String getURLGlobalTimeline(Integer lessThan){
         return HOST + PATH_GLOBAL_TIMELINE;
+    }
+    public static String getURLFCMRegister(){
+        return HOST + PATH_FCM_REGISTER;
     }
     public static String getURLAllUsers(){
         return HOST + PATH_WHO_TO_FOLLOW;

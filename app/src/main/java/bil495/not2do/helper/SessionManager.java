@@ -29,6 +29,7 @@ public class SessionManager {
     private static final String KEY_TOKEN = "token";
     private static final String KEY_ID = "id";
     private static final String KEY_USERNAME = "username";
+    private static final String KEY_FCM_TOKEN = "fcm_token";
 
     public SessionManager(Context context) {
         this._context = context;
@@ -44,6 +45,11 @@ public class SessionManager {
         editor.commit();
 
         Log.d(TAG, "User login session modified!");
+    }
+
+    public  void setFCMToken(final String fcmToken){
+        editor.putString(KEY_FCM_TOKEN, fcmToken);
+        editor.commit();
     }
 
     public void setUsernameAndToken(final int id, final String username, final String token) {
@@ -72,5 +78,9 @@ public class SessionManager {
 
     public String getToken(){
         return pref.getString(KEY_TOKEN, "");
+    }
+
+    public String getFCMToken(){
+        return pref.getString(KEY_FCM_TOKEN, "");
     }
 }
