@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "521716893057",
+    "firebase_url": "https://not2do-bbdb9.firebaseio.com",
+    "project_id": "not2do-bbdb9",
+    "storage_bucket": "not2do-bbdb9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521716893057:android:6f6dd97f3d50bb48",
+        "android_client_info": {
+          "package_name": "bil495.not2do"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521716893057-apq6as03tj7emdnk87ksht7h8vfrl8vl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bil495.not2do",
+            "certificate_hash": "e4e3ce0c290a20c50aef157896c2b8d87d3a1576"
+          }
+        },
+        {
+          "client_id": "521716893057-psf6e5s5o50959u9qu87a86crr4nskd6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmHcDA48tg0O0ACVPZhw6JMDPa15kUnTA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521716893057-psf6e5s5o50959u9qu87a86crr4nskd6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
