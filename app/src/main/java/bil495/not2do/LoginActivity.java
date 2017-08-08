@@ -14,8 +14,11 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import bil495.not2do.app.AppConfig;
 import bil495.not2do.app.AppController;
+import bil495.not2do.fcm.MyFirebaseInstanceIDService;
 import bil495.not2do.helper.SessionManager;
 
 import org.json.JSONException;
@@ -121,6 +124,9 @@ public class LoginActivity extends Activity {
                         Integer userId = jObj.getInt("user_id");
                         String token = jObj.getString("token");
                         String username = jObj.getString("username");
+
+                        MyFirebaseInstanceIDService fcmIDService = new MyFirebaseInstanceIDService();
+                        fcmIDService.sendRegistrationToServer(FirebaseInstanceId.getInstance().getToken(), userId.toString());
 
                         session.setUsernameAndToken(userId, username, token);
                         session.setLogin(true);

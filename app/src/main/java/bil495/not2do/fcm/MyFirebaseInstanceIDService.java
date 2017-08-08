@@ -19,7 +19,6 @@ import java.util.Map;
 
 import bil495.not2do.app.AppConfig;
 import bil495.not2do.app.AppController;
-import bil495.not2do.helper.SessionManager;
 
 /**
  * Created by Görkem Mülayim on 8/7/17.
@@ -34,14 +33,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed token: " + refreshedToken);
 
-        sendRegistrationToServer(refreshedToken);
-
-        saveNewToken(refreshedToken);
-    }
-
-    private void saveNewToken(final String token) {
-        SessionManager session = new SessionManager(getBaseContext());
-        session.setFCMToken(token);
+        //sendRegistrationToServer(refreshedToken);
     }
 
     /**
@@ -52,10 +44,8 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
      *
      * @param token The new token.
      */
-    private void sendRegistrationToServer(final String token) {
+    public void sendRegistrationToServer(final String token, final String user_id) {
         // Add custom implementation, as needed.
-        final SessionManager session = new SessionManager(getBaseContext());
-
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.getURLFCMRegister(), new Response.Listener<String>() {
 
@@ -97,8 +87,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("user_id", Integer.toString(session.getUserID()));
-                params.put("token", session.getToken());
+                params.put("user_id", user_id);
                 params.put("fcm_token", token);
 
                 return params;
