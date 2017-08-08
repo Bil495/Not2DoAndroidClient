@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class AppConfig {
     // Server url
-    public static String HOST = "https://not2do-rootg.c9users.io/users";
+    public static String HOST = "https://not2do.herokuapp.com/users";
 
     //Api paths
     public static String PATH_LOGIN = "/log_in";

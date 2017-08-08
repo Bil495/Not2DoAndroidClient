@@ -18,10 +18,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "FCM Service";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-        Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
+        Log.d(TAG, "Notification Data: " + remoteMessage.getData().toString());
 
-        String body = remoteMessage.getNotification().getBody();
+        String body = remoteMessage.getData().toString();
         MyNotificationManager notifier = new MyNotificationManager();
         notifier.notify(getSystemService(Context.NOTIFICATION_SERVICE), getBaseContext(), body);
     }
